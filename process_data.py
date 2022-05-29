@@ -7,7 +7,7 @@ import numpy as np
 def extract_participants(path):
     '''
     Extract participants list from dataset.
-    all_eu_votes.csv
+    ev_all_votes.csv
     '''
     df = pd.read_csv(path)
     countries = pd.unique(df['From'])
@@ -68,13 +68,16 @@ def get_migrants_from_country(df, country, year):
     return migrants_data
 
 
-def get_votes_from_country(path, country, who, the_year):
+def get_votes_from_country(country, who, the_year):
     '''
     Create a dictionary for {country} with specified type of voting (jury or
     televoters), by years.
-    all_eu_votes.csv
+    ev_all_votes.csv
     '''
-    with open(path, 'r', encoding='utf-8') as f:
+    if who == 'jury' and the_year == '2021':
+        return get_votes_from_country_2021(country)
+
+    with open('ev_all_votes.csv', 'r', encoding='utf-8') as f:
         data = f.readlines()
     
     data_arr = [line for line in data]
@@ -91,20 +94,58 @@ def get_votes_from_country(path, country, who, the_year):
     return country_points
 
 
+def get_votes_from_country_2021(country):
+    '''
+    Create a dictionary for {country} with jury votes in 2021 year.
+    ev_2021_votes.csv
+    '''
+    with open('ev_2021_votes.csv', 'r', encoding='utf-8') as f:
+        data = f.readlines()
+    
+    data_arr = [line for line in data]
+    countries, points = data_arr[0].split(',')[1:], []
+
+
+    for row in data_arr[1:]:
+        if country == row.split(',')[0].lower():
+            points = row.split(',')[1:]
+            break
+
+    country_points = {}
+
+    index = 0
+    for voter, point in zip(countries, points):
+        if index == len(countries) - 1:
+            point = point[:-1]
+            voter = voter[:-1]
+        country_points[voter] = point
+        index += 1
+
+    country_points = {voter:point for voter, point in country_points.items() if point != '0'}
+    return country_points
+
+
 def main():
+    '''
+    Main function that calls other data processing functions.
+    '''
     participants = extract_participants('ev_all_votes.csv')
     # print(participants)
 
-    votes = get_votes_from_country('ev_all_votes.csv', 'ukraine', 'televoters', '2016')
+    # votes = get_votes_from_country('ukraine', 'televoters', '2016')
+    # print(votes)
+
+    votes = get_votes_from_country('ukraine', 'jury', '2021')
     print(votes)
 
-    df = pd.read_csv('migrants.csv', dtype=str)
-    df = clean_data(participants, df)
-    # print(df)
+    # votes2021 = get_votes_from_country_2021()
 
-    migrants = get_migrants_from_country(df, 'ukraine', '2014')
-    print(migrants)
+    # df = pd.read_csv('migrants.csv', dtype=str)
+    # df = clean_data(participants, df)
+    # # print(df)
 
+    # migrants = get_migrants_from_country(df, 'ukraine', '2014')
+    # print(migrants)
 
 
 
