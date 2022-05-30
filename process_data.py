@@ -77,7 +77,7 @@ def get_votes_from_country(country, who, the_year):
     if who == 'jury' and the_year == '2021':
         return get_votes_from_country_2021(country)
 
-    with open('ev_all_votes.csv', 'r', encoding='utf-8') as f:
+    with open('data/ev_all_votes.csv', 'r', encoding='utf-8') as f:
         data = f.readlines()
     
     data_arr = [line for line in data]
@@ -99,7 +99,7 @@ def get_votes_from_country_2021(country):
     Create a dictionary for {country} with jury votes in 2021 year.
     ev_2021_votes.csv
     '''
-    with open('ev_2021_votes.csv', 'r', encoding='utf-8') as f:
+    with open('data/ev_2021_votes.csv', 'r', encoding='utf-8') as f:
         data = f.readlines()
     
     data_arr = [line for line in data]
@@ -129,7 +129,7 @@ def main():
     '''
     Main function that calls other data processing functions.
     '''
-    participants = extract_participants('ev_all_votes.csv')
+    participants = extract_participants('data/ev_all_votes.csv')
     # print(participants)
 
     # votes = get_votes_from_country('ukraine', 'televoters', '2016')
