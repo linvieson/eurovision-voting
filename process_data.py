@@ -1,3 +1,5 @@
+
+   
 import pandas as pd
 import numpy as np
 
@@ -74,10 +76,14 @@ def get_votes_from_country(country, who, the_year):
     televoters), by years.
     ev_all_votes.csv
     '''
+    options = ['jury', 'televoters']
+    options.remove(who)
+    not_match = options[0]
+
     if who == 'jury' and the_year == '2021':
         return get_votes_from_country_2021(country)
 
-    with open('data/ev_all_votes.csv', 'r', encoding='utf-8') as f:
+    with open('ev_all_votes.csv', 'r', encoding='utf-8') as f:
         data = f.readlines()
     
     data_arr = [line for line in data]
@@ -88,7 +94,7 @@ def get_votes_from_country(country, who, the_year):
         number, edition, year, vote_type, from_country, to_country, points = row.split(',')
         points = points[:-1]
 
-        if (country in to_country and who in vote_type and the_year == year):
+        if (country in to_country and not_match not in vote_type and the_year == year):
             country_points[from_country] = points
 
     return country_points
@@ -99,7 +105,7 @@ def get_votes_from_country_2021(country):
     Create a dictionary for {country} with jury votes in 2021 year.
     ev_2021_votes.csv
     '''
-    with open('data/ev_2021_votes.csv', 'r', encoding='utf-8') as f:
+    with open('ev_2021_votes.csv', 'r', encoding='utf-8') as f:
         data = f.readlines()
     
     data_arr = [line for line in data]
@@ -129,13 +135,13 @@ def main():
     '''
     Main function that calls other data processing functions.
     '''
-    participants = extract_participants('data/ev_all_votes.csv')
+    participants = extract_participants('ev_all_votes.csv')
     # print(participants)
 
     # votes = get_votes_from_country('ukraine', 'televoters', '2016')
     # print(votes)
 
-    votes = get_votes_from_country('ukraine', 'jury', '2021')
+    votes = get_votes_from_country('sweden', 'televoters', '2010')
     print(votes)
 
     # votes2021 = get_votes_from_country_2021()
@@ -151,5 +157,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
