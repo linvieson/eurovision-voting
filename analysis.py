@@ -13,7 +13,7 @@ from process_data import clean_data
 from process_data import extract_participants
 
 # winners table
-winners_data = pd.read_csv('eurovision_winners.csv')
+winners_data = pd.read_csv('data/eurovision_winners.csv')
 
 # random sampling of the year the winner of this year (some country)
 # sample = winners_data.sample()
@@ -46,8 +46,8 @@ votes = pd.concat([votes_this, votes_previous])
 votes = votes.groupby(['country']).sum().reset_index()
 
 # get migrants from this COUNTRY in chosen YEAR 
-participants = extract_participants('ev_all_votes.csv')
-df = pd.read_csv('migrants.csv', dtype=str)
+participants = extract_participants('data/ev_all_votes.csv')
+df = pd.read_csv('data/migrants.csv', dtype=str)
 df = clean_data(participants, df)
 
 # migrants in YEAR
@@ -79,15 +79,15 @@ for year_num in range(2, int(YEAR) - 1990):
     migrants_df = migrants_df.merge(migrants_list[year_num], on=['country'])
 
 # create dataframe with this COUNTRYs borders
-borders = pd.read_csv('borders.csv')
+borders = pd.read_csv('data/borders.csv')
 country_borders = pd.DataFrame()
 country_borders['country'] = borders['Country']
 country_borders['borders'] = borders[str(COUNTRY).lower()].astype(int)
 
 # dataframe for languages match
 language = pd.DataFrame()
-language['country'] = pd.read_csv('borders.csv')['Country']
-language['lang'] = np.where(pd.read_csv('borders.csv')['official_language'] == LANGUAGE, 1, 0)
+language['country'] = pd.read_csv('data/borders.csv')['Country']
+language['lang'] = np.where(pd.read_csv('data/borders.csv')['official_language'] == LANGUAGE, 1, 0)
 
 
 # Regression by migrants  
