@@ -62,16 +62,11 @@ migrants[f'migrants{YEAR}'] = migrants['migrants'].apply(lambda x: x.replace(','
 migrants_list = []
 for year_number in range(1990, int(YEAR) + 1):
     migrants_dict = get_migrants_from_country(df, str(COUNTRY.lower()), str(year_number))
-    # print(country_dict)
     if len(migrants_dict) != 0:
         migrants_year = pd.DataFrame(list(migrants_dict.items()), \
                         index = [x for x in range(len(migrants_dict.items()))], \
                         columns = ['country', f'migrants{year_number}'])
-        # print(votes_year)
         migrants_year[f'migrants{year_number}'] = migrants_year[f'migrants{year_number}'].apply(lambda x: x.replace(',', '')).astype(int)
-        # votes = pd.concat([votes, votes_year])
-        # votes = votes.groupby(['country']).sum()
-        # votes = pd.merge(votes, votes_year, on=['country'])
         migrants_list.append(migrants_year)
 
 migrants_df = migrants_list[0].merge(migrants_list[1], on=['country'])
@@ -113,7 +108,6 @@ print(model.summary())
 votes_list = []
 for year_number in range(1990, int(YEAR)):
     country_dict = get_votes_from_country(str(COUNTRY.lower()), 'televoters', str(year_number))
-    # print(country_dict)
     if len(country_dict) != 0:
         votes_year = pd.DataFrame(list(country_dict.items()), \
                         index = [x for x in range(len(country_dict.items()))], \
