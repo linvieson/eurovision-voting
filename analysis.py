@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 
-# import functions from data processing module
+# import functions from data processing modules
 from process_data import get_votes_from_country
 from process_data import get_migrants_from_country
 from process_data import clean_data

@@ -1,5 +1,3 @@
-
-   
 import pandas as pd
 import numpy as np
 
@@ -83,7 +81,7 @@ def get_votes_from_country(country, who, the_year):
     if who == 'jury' and the_year == '2021':
         return get_votes_from_country_2021(country)
 
-    with open('ev_all_votes.csv', 'r', encoding='utf-8') as f:
+    with open('data/ev_all_votes.csv', 'r', encoding='utf-8') as f:
         data = f.readlines()
     
     data_arr = [line for line in data]
@@ -105,7 +103,7 @@ def get_votes_from_country_2021(country):
     Create a dictionary for {country} with jury votes in 2021 year.
     ev_2021_votes.csv
     '''
-    with open('ev_2021_votes.csv', 'r', encoding='utf-8') as f:
+    with open('data/ev_2021_votes.csv', 'r', encoding='utf-8') as f:
         data = f.readlines()
     
     data_arr = [line for line in data]
@@ -135,23 +133,20 @@ def main():
     '''
     Main function that calls other data processing functions.
     '''
-    participants = extract_participants('ev_all_votes.csv')
-    # print(participants)
+    participants = extract_participants('data/ev_all_votes.csv')
+    print(participants)
 
-    # votes = get_votes_from_country('ukraine', 'televoters', '2016')
-    # print(votes)
-
-    votes = get_votes_from_country('sweden', 'televoters', '2010')
+    votes = get_votes_from_country('ukraine', 'televoters', '2016')
     print(votes)
 
-    # votes2021 = get_votes_from_country_2021()
+    votes = get_votes_from_country('ukraine', 'televoters', '2010')
+    print(votes)
 
-    # df = pd.read_csv('migrants.csv', dtype=str)
-    # df = clean_data(participants, df)
-    # # print(df)
+    df = pd.read_csv('migrants.csv', dtype=str)
+    df = clean_data(participants, df)
 
-    # migrants = get_migrants_from_country(df, 'ukraine', '2014')
-    # print(migrants)
+    migrants = get_migrants_from_country(df, 'ukraine', '2014')
+    print(migrants)
 
 
 
